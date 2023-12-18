@@ -1,4 +1,3 @@
-
 const categories = document.getElementById("categories").querySelectorAll("li");
 const productsLists = document
   .getElementById("products")
@@ -10,9 +9,7 @@ function hideAllProducts() {
   });
 }
 
-
 hideAllProducts();
-
 
 categories.forEach((category, index) => {
   category.addEventListener("click", () => {
@@ -26,7 +23,6 @@ function buyProduct(productName) {
   const selectedProduct = productsData.find(
     (product) => product.name === productName
   );
-
 
   const productDetails = document.getElementById("product-details");
   productDetails.querySelector("#product-description").textContent =
@@ -44,7 +40,7 @@ function buyProduct(productName) {
   buyButton.onclick = () => {
     alert("Поздровляю, вы купили товар");
     buyButton.style.display = "none";
-    resetProductDetails(productDetails); 
+    resetProductDetails(productDetails);
     hideAllProducts();
   };
 }
@@ -145,3 +141,56 @@ const productsData = [
     image: "https://content.rozetka.com.ua/goods/images/big/353726664.jpg",
   },
 ];
+function submitOrder() {
+  const fullName = document.getElementById("fullName").value;
+  const city = document.getElementById("city").value;
+  const deliveryPoint = document.getElementById("deliveryPoint").value;
+  const paymentMethod = document.getElementById("paymentMethod").value;
+  const quantity = document.getElementById("quantity").value;
+  const comment = document.getElementById("comment").value;
+
+  if (!fullName || !city || !deliveryPoint || !paymentMethod || !quantity) {
+    alert("Будь ласка, заповніть всі обов'язкові поля.");
+    return;
+  }
+
+  const orderInfo = `Ім'я: ${fullName}\nМісто: ${city}\nСклад Нової пошти: ${deliveryPoint}\nСпосіб оплати: ${paymentMethod}\nКількість: ${quantity}\nКоментар: ${
+    comment || "немає"
+  }`;
+
+  alert(`Ваше замовлення:\n${orderInfo}`);
+  resetOrderForm();
+}
+
+function resetOrderForm() {
+  document.getElementById("fullName").value = "";
+  document.getElementById("city").value = "";
+  document.getElementById("deliveryPoint").value = "";
+  document.getElementById("paymentMethod").value = "";
+  document.getElementById("quantity").value = "";
+  document.getElementById("comment").value = "";
+
+  document.getElementById("order-form").style.display = "none";
+}
+
+function buyProduct(productName) {
+  const selectedProduct = productsData.find(
+    (product) => product.name === productName
+  );
+  const productDetails = document.getElementById("product-details");
+  productDetails.querySelector("#product-description").textContent =
+    selectedProduct.description;
+  productDetails.querySelector(
+    "#product-price"
+  ).textContent = `Ціна: ${selectedProduct.price.toFixed(2)} грн`;
+
+  const productImage = document.getElementById("product-image");
+  productImage.src = selectedProduct.image;
+
+  const buyButton = document.getElementById("buy-button");
+  buyButton.style.display = "block";
+
+  buyButton.onclick = () => {
+    document.getElementById("order-form").style.display = "block";
+  };
+}
